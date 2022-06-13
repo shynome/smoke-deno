@@ -31,7 +31,7 @@ import { Writable } from "./writable.ts";
 export class ReadableAsyncIterator<T = any> implements AsyncIterator<T> {
   constructor(private readonly readable: Readable<T>) {}
   public async next(): Promise<IteratorResult<T>> {
-    return this.readable.read();
+    return this.readable.read() as any;
   }
 }
 
@@ -54,7 +54,7 @@ export class Readable<T = any> {
   }
 
   /** Reads the next 'result' from the underlying stream. */
-  public async read(): Promise<ReadableStreamReadResult<T>> {
+  public async read(): Promise<ReadableStreamDefaultReadResult<T>> {
     return this.reader.read();
   }
 
