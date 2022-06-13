@@ -30,6 +30,7 @@ import { EventHandler } from "../async/mod.ts";
 import { Events } from "../async/mod.ts";
 import { Buffer } from "../buffer/mod.ts";
 import { Network } from "../network/mod.ts";
+import { RTCErrorEvent } from "./polyfill.ts";
 
 const MAX_MESSAGE_SIZE = 1_000_000; // 1mb maximum message receive size.
 const MAX_SEGMENT_SIZE = 32768; // 32k maximum message size.
@@ -172,17 +173,14 @@ export class Socket extends Events {
    * receiving COMPLETE signals from the sender.
    */
   private setupEvents() {
-    this.connection!.addEventListener(
-      "track",
-      (event) => this.emit("track", event),
+    this.connection!.addEventListener("track", (event) =>
+      this.emit("track", event)
     );
-    this.channel!.addEventListener(
-      "error",
-      (event) => this.emit("error", event),
+    this.channel!.addEventListener("error", (event) =>
+      this.emit("error", event)
     );
-    this.channel!.addEventListener(
-      "close",
-      (event) => this.emit("close", event),
+    this.channel!.addEventListener("close", (event) =>
+      this.emit("close", event)
     );
     this.channel!.addEventListener("message", (event) => {
       const [type, buffer] = this.decode(event.data);
@@ -219,7 +217,7 @@ export class Socket extends Events {
     connection: RTCPeerConnection,
     channel: RTCDataChannel,
     local: string,
-    remote: string,
+    remote: string
   ): Promise<Socket> {
     channel.binaryType = "arraybuffer";
     const socket = new Socket();
@@ -240,7 +238,7 @@ export class Socket extends Events {
   public static createSocket(
     net: Network,
     remote: string,
-    port: string,
+    port: string
   ): Socket {
     const socket = new Socket();
     into(async () => {
