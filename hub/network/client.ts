@@ -115,6 +115,8 @@ export class NetworkHub extends Events implements Hub, Disposable {
   }
 
   public dispose() {
-    this.socket.close();
+    this.barrier.run(()=>{
+      this.socket.close();
+    })
   }
 }
