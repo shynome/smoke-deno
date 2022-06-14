@@ -1,4 +1,4 @@
-import { Node, NetworkHub } from "../mod.ts";
+import { Node, NetworkHub } from "../node/mod.ts";
 
 export async function createServer() {
   const hostHub = new NetworkHub("ws://127.0.0.1:5000");
